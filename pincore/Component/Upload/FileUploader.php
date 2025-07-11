@@ -46,22 +46,16 @@ class FileUploader
     private int $maxFileSize = 0;// Maximum file size in bytes
 
 
-    public function __construct(string $path = '', string $destination = '', UploadedFile|string $fileKey = null, string $access = 'public')
-    {
+    public function __construct(
+        string $path = '',
+        string $destination = '',
+        UploadedFile $file,
+        string $access = 'public'
+    ){
         $this->path = $path;
         $this->destination = $destination;
+        $this->file = $file;
         $this->access = $access;
-
-        if ($fileKey instanceof UploadedFile) {
-            $this->fileKey = $fileKey;
-            $this->file = $fileKey;
-        } else {
-            $this->fileKey = $fileKey;
-            if (!empty($_FILES) && !empty($fileKey))
-                $this->file = (new FileBag($_FILES))->get($fileKey);
-        }
-
-
         $this->setUploadPath();
     }
 

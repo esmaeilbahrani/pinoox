@@ -13,13 +13,13 @@
 namespace Pinoox\Component\Upload;
 
 
+use Pinoox\Component\Http\File\UploadedFile;
 use Pinoox\Model\FileModel;
-use Pinoox\Portal\App\App;
 
 class FileUploaderFactory
 {
 
-    public function store($destination, $file, $access = 'public'): FileUploader
+    public function store($destination, UploadedFile $file, $access = 'public'): FileUploader
     {
         return new FileUploader(
             path(''),
