@@ -2,7 +2,7 @@ import {useAuthStore} from "../stores/modules/auth.js";
 
 let isFirstSession = false;
 
-export async function authGuard(to, from, next) {
+export async function authGuard(to) {
     const store = useAuthStore();
     if (!isFirstSession) {
         isFirstSession = true;
@@ -11,17 +11,15 @@ export async function authGuard(to, from, next) {
     const isAuth = store.isAuth;
 
     if (to.name !== 'login' && !isAuth) {
-        next({ name: 'login' });
+        return { name: 'login' };
     } else if (to.name === 'login' && isAuth) {
         const redirect = typeof to.query.redirect === 'string' ? to.query.redirect : '';
 
         if (redirect !== '' && redirect.startsWith('/') && !redirect.startsWith('//')) {
-            window.location.assign(redirect);
-            return;
+            window.location.replace(redirect);
+            return false;
         }
 
-        next({ name: 'desktop' });
-    } else {
-        next();
+        return { name: 'desktop' };
     }
 }
